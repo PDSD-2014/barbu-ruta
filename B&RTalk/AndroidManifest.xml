@@ -30,10 +30,6 @@
         </service>
 
         <activity
-            android:name="ro.pub.cs.brtalk.HelloWorkd"
-            android:label="@string/title_activity_hello_workd" >
-        </activity>
-        <activity
             android:name="ro.pub.cs.brtalk.SignUp"
             android:label="@string/title_activity_sign_up" >
         </activity>
