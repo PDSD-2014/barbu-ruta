@@ -86,9 +86,13 @@ public class SignUp extends Activity {
 								result = imService.signUpUser(username.getText().toString(), password1.getText().toString(), email.getText().toString());
 								handler.post(new Runnable() {
 									public void run() {
-										if (result.equals("2222")){
-											Toast.makeText(SignUp.this, result, Toast.LENGTH_LONG).show();
-											
+										if (result.equals("1") || result.equals("COULD NOT ADD USER")){
+											Toast.makeText(SignUp.this, R.string.signup_error, Toast.LENGTH_LONG).show();
+										}else if (result.equals("USER EXISTENT")){
+											Toast.makeText(SignUp.this, R.string.already_user, Toast.LENGTH_LONG).show();
+										}else if (result.equals("SUCCESS")){
+											Toast.makeText(SignUp.this, R.string.success_signup, Toast.LENGTH_LONG).show();
+											finish();
 										}
 									}
 								});
