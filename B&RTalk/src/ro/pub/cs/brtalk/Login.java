@@ -27,13 +27,13 @@ public class Login extends Activity {
 	private EditText password;
 	private Button cancelBut;
 	private Button loginBut;
-<<<<<<< HEAD
+
 	private Handler handler = new Handler();
-=======
+
 	private Button signUpBut;
 
 	
->>>>>>> 636a6e9daaf83d721a6838546a5661ec89869911
+
 	private IManagerApp iMService;
 	
 	private ServiceConnection mConnection = new ServiceConnection() {
@@ -51,11 +51,7 @@ public class Login extends Activity {
 			iMService = ((IMService.IMBinder)service).getService();
 			if (iMService.isUserAuthenticated() == true){
 				Toast.makeText(Login.this, "User autentificat!", Toast.LENGTH_LONG).show();
-<<<<<<< HEAD
-//				Intent i = new Intent(Login.this, HelloWorkd.class);
-//				startActivity(i);
-=======
->>>>>>> 636a6e9daaf83d721a6838546a5661ec89869911
+
 				Login.this.finish();
 			}
 			//this will be removed in final version
