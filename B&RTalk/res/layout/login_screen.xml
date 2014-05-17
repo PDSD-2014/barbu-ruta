@@ -59,6 +59,19 @@
 	        android:text="@string/login" />
         
     </LinearLayout>
+	<TextView
+        android:id="@+id/newUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/newUser" 
+       	android:layout_marginLeft="30dp"
+     />
 
+    <Button
+        android:id="@+id/sign_up_button"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/sign_up" />
    
 </LinearLayout>

@@ -17,10 +17,27 @@
     <string name="all_fields">Please complete all fileds!</string>
     <string name="title_activity_sign_up">SignUp</string>
     <string name="password_mismatch">Password is not correct!</string>
+<<<<<<< HEAD
     <string name="signup_error">Could not sign up. Try again!</string>
     <string name="already_user">User already exist!</string>
     <string name="success_signup">Successful sign up!</string>
     <string name="signin_error">Could not sign in!</string>
 	<string name="incorect_user_pass">Incorrect username/password!</string>
     
+=======
+    <string name="signup_error">signup_error</string>
+    <string name="already_user">already_user</string>
+    <string name="success_signup">success_signup</string>
+    <string name="newUser">Don\'t hav an account?  Y U no register?</string>
+    <string name="title_activity_chats">Chats</string>
+    <string name="title_activity_chat">Chat</string>
+    <string name="title_activity_friend">Friend</string>
+    <string name="title_activity_friends">Friends</string>
+    <string name="new_chat">New Chat</string>
+    <string name="friends">Friends</string>
+    <string name="add_friend">Add Friend</string>
+    <string name="no_chats">You don\'t have any chats.</string>
+    <string name="no_friends">You don\'t have any friends.</string>
+
+>>>>>>> 636a6e9daaf83d721a6838546a5661ec89869911
 </resources>

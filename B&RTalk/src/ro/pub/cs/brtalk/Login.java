@@ -19,7 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class Login extends Activity {
-	
+		
 	public static final int SIGN_UP_ID = Menu.FIRST;
 	public static final int EXIT_ID = Menu.FIRST + 1;
 
@@ -27,7 +27,13 @@ public class Login extends Activity {
 	private EditText password;
 	private Button cancelBut;
 	private Button loginBut;
+<<<<<<< HEAD
 	private Handler handler = new Handler();
+=======
+	private Button signUpBut;
+
+	
+>>>>>>> 636a6e9daaf83d721a6838546a5661ec89869911
 	private IManagerApp iMService;
 	
 	private ServiceConnection mConnection = new ServiceConnection() {
@@ -45,8 +51,11 @@ public class Login extends Activity {
 			iMService = ((IMService.IMBinder)service).getService();
 			if (iMService.isUserAuthenticated() == true){
 				Toast.makeText(Login.this, "User autentificat!", Toast.LENGTH_LONG).show();
+<<<<<<< HEAD
 //				Intent i = new Intent(Login.this, HelloWorkd.class);
 //				startActivity(i);
+=======
+>>>>>>> 636a6e9daaf83d721a6838546a5661ec89869911
 				Login.this.finish();
 			}
 			//this will be removed in final version
@@ -63,7 +72,7 @@ public class Login extends Activity {
 		
 		//start service
 		startService(new Intent(Login.this, IMService.class));
-		
+
 		
 		setContentView(R.layout.login_screen);
 		setTitle(R.string.login_title);
@@ -72,6 +81,7 @@ public class Login extends Activity {
 		password = (EditText) findViewById(R.id.password);
 		cancelBut = (Button) findViewById(R.id.cancel);
 		loginBut = (Button) findViewById(R.id.login);
+		signUpBut = (Button) findViewById(R.id.sign_up_button);
 		
 		loginBut.setOnClickListener(new View.OnClickListener() {
 			
@@ -123,7 +133,15 @@ public class Login extends Activity {
 				
 			}
 		});
-		
+		signUpBut.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent i = new Intent(Login.this, SignUp.class);
+				startActivity(i);
+			}
+		});
 		cancelBut.setOnClickListener(new OnClickListener() {
 			
 			@Override
