@@ -79,7 +79,6 @@ public class SignUp extends Activity {
 					if (password1.getText().toString().equals(password2.getText().toString())){
 						Thread threadSignUp = new Thread(){
 							String result = new String();
-
 							@Override
 							public void run() {
 								// TODO Auto-generated method stub

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +27,7 @@ public class Login extends Activity {
 	private EditText password;
 	private Button cancelBut;
 	private Button loginBut;
-	
+	private Handler handler = new Handler();
 	private IManagerApp iMService;
 	
 	private ServiceConnection mConnection = new ServiceConnection() {
@@ -44,8 +45,8 @@ public class Login extends Activity {
 			iMService = ((IMService.IMBinder)service).getService();
 			if (iMService.isUserAuthenticated() == true){
 				Toast.makeText(Login.this, "User autentificat!", Toast.LENGTH_LONG).show();
-				Intent i = new Intent(Login.this, HelloWorkd.class);
-				startActivity(i);
+//				Intent i = new Intent(Login.this, HelloWorkd.class);
+//				startActivity(i);
 				Login.this.finish();
 			}
 			//this will be removed in final version
@@ -85,14 +86,35 @@ public class Login extends Activity {
 					return;
 				}else if (username.length() > 0 && password.length() > 0){
 					Thread loginThread = new Thread(){
-
+						
+						private Handler handler = new Handler();
+						String result = new String();
+						
 						@Override
 						public void run() {
 							// TODO Auto-generated method stub
-							super.run();
+							
+							
+							result = iMService.signInUser(username.getText().toString(), password.getText().toString());
+							
+							handler.post(new Runnable() {
+								
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+									if (result.equals("1")){
+										Toast.makeText(Login.this,R.string.signin_error, Toast.LENGTH_LONG).show();
+									}else if(result.equalsIgnoreCase("INCORECT DATA")){
+										Toast.makeText(Login.this, R.string.incorect_user_pass, Toast.LENGTH_LONG).show();
+									}else{
+										//here activity will be changed 
+									}
+								}
+							});
 						}
 						
 					};
+					loginThread.start();
 				}else{
 					//Username or/and password were not inserted
 					Toast.makeText(Login.this, R.string.not_inserted_user_pass, Toast.LENGTH_LONG).show();

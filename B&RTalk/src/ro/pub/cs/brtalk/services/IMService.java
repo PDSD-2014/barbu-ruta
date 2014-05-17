@@ -76,6 +76,15 @@ public class IMService extends Service implements IManagerApp {
 		String result = socket.sendHttpRequest(params);
 		return result;
 	}
+
+
+	@Override
+	public String signInUser(String username, String password) {
+		// TODO Auto-generated method stub
+		String params = "type=signin&username=" + username + "&password=" + password;
+		String result = socket.sendHttpRequest(params);
+		return result;
+	}
 	
 	
 	

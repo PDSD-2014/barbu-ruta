@@ -17,5 +17,10 @@
     <string name="all_fields">Please complete all fileds!</string>
     <string name="title_activity_sign_up">SignUp</string>
     <string name="password_mismatch">Password is not correct!</string>
-
+    <string name="signup_error">Could not sign up. Try again!</string>
+    <string name="already_user">User already exist!</string>
+    <string name="success_signup">Successful sign up!</string>
+    <string name="signin_error">Could not sign in!</string>
+	<string name="incorect_user_pass">Incorrect username/password!</string>
+    
 </resources>

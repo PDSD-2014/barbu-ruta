@@ -10,7 +10,8 @@ public interface IManagerApp {
 	 * Return a message(accepted, rejected and why was rejected)
 	 * Implemented in IMService
 	 */
-	public String signUpUser(String username, String password, String email); 
+	public String signUpUser(String username, String password, String email);
+	public String signInUser(String username, String password);
 	
 	
 }
