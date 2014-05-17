@@ -17,6 +17,8 @@ public class IMService extends Service implements IManagerApp {
 	private NotificationManager mNM;
 	private ConnectivityManager mConMan = null;
 	private Boolean authenticatedUser = false;
+	private String username = null;
+	private String password = null;
 	private ISocket socket = new Socket();
 	
 	public class IMBinder extends Binder{
@@ -81,8 +83,14 @@ public class IMService extends Service implements IManagerApp {
 	@Override
 	public String signInUser(String username, String password) {
 		// TODO Auto-generated method stub
+		this.authenticatedUser = false;
 		String params = "type=signin&username=" + username + "&password=" + password;
 		String result = socket.sendHttpRequest(params);
+		if (!result.equals("1") && !(result.equals("INCORECT DATA"))){
+			authenticatedUser = true;
+			this.username = username;
+			this.password = password;
+		}
 		return result;
 	}
 	
