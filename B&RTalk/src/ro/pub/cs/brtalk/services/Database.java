@@ -5,6 +5,8 @@ import java.util.List;
 
 import ro.pub.cs.brtalk.Chat;
 import ro.pub.cs.brtalk.Friend;
+import ro.pub.cs.brtalk.tools.FriendInfo;
+import ro.pub.cs.brtalk.tools.Message;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -21,10 +23,13 @@ public class Database extends SQLiteOpenHelper {
 	public static final String ASSOCIATION_CHAT_FRIEND_ID = "association_chat_friend_id";
 	public static final String CHATS_TABLE_NAME = "chats";
 	public static final String CHAT_ID = "chat_id";
-	public static final String CHAT_NAME = "name";
+	public static final String CHAT_TEXT = "name";
+	public static final String FROM = "from";
+	public static final String WHEN = "when";
 	public static final String FRIENDS_TABLE_NAME = "friends";
 	public static final String FRIEND_ID = "friend_id";
 	public static final String FRIEND_NAME = "name";
+	public static final String FRIEND_EMAIL = "email";
 
 	public static Database getInstance(Context context) {
 		if (instance == null)
@@ -42,58 +47,57 @@ public class Database extends SQLiteOpenHelper {
 
 		String CREATE_CHATS_TABLE = "CREATE TABLE " + CHATS_TABLE_NAME + "("
 				+ CHAT_ID + " INTEGER PRIMARY KEY, "
-				+ CHAT_NAME + " TEXT)";
+				+ CHAT_TEXT + " TEXT, " + FROM  + " TEXT, " + WHEN + " TEXT)" ; 
 		String CREATE_FRIENDS_TABLE = "CREATE TABLE " + FRIENDS_TABLE_NAME + "("
 				+ FRIEND_ID + " INTEGER PRIMARY KEY, "
-				+ FRIEND_NAME + " TEXT)";	
-		String CREATE_ASSOCIATIONS_CHATS_FRIENDS_TABLE = "CREATE TABLE " + ASSOCIATIONS_CHAT_FRIEND_TABLE_NAME + "("
+				+ FRIEND_NAME + " TEXT, " + FRIEND_EMAIL + "TEXT)";	
+		/*String CREATE_ASSOCIATIONS_CHATS_FRIENDS_TABLE = "CREATE TABLE " + ASSOCIATIONS_CHAT_FRIEND_TABLE_NAME + "("
 				+ ASSOCIATION_CHAT_FRIEND_ID + " INTEGER PRIMARY KEY, "
 				+ CHAT_ID + " INTEGER, " 
 				+ FRIEND_ID + " INTEGER, "
 				+ "FOREIGN KEY (" + CHAT_ID + ") REFERENCES " + CHATS_TABLE_NAME + " (" + CHAT_ID + "), "
-				+ "FOREIGN KEY (" + FRIEND_ID + ") REFERENCES " + FRIENDS_TABLE_NAME + " (" + FRIEND_ID + "))";
+				+ "FOREIGN KEY (" + FRIEND_ID + ") REFERENCES " + FRIENDS_TABLE_NAME + " (" + FRIEND_ID + "))";*/
 		db.execSQL(CREATE_CHATS_TABLE);
 		db.execSQL(CREATE_FRIENDS_TABLE);
-		db.execSQL(CREATE_ASSOCIATIONS_CHATS_FRIENDS_TABLE);
+		//db.execSQL(CREATE_ASSOCIATIONS_CHATS_FRIENDS_TABLE);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS " + CHATS_TABLE_NAME);
 		db.execSQL("DROP TABLE IF EXISTS " + FRIENDS_TABLE_NAME);
-		db.execSQL("DROP TABLE IF EXISTS " + ASSOCIATIONS_CHAT_FRIEND_TABLE_NAME);
+		//db.execSQL("DROP TABLE IF EXISTS " + ASSOCIATIONS_CHAT_FRIEND_TABLE_NAME);
 		onCreate(db);
 	}
 	
-	public void addChat(Chat chat) {
+	public void addChat(Message mess) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues contentValues = new ContentValues();
-		contentValues.put(CHAT_ID, chat.getChatID());
-		contentValues.put(CHAT_NAME, chat.getChatName());
+		contentValues.put(CHAT_ID, mess.getId());
+		contentValues.put(CHAT_TEXT, mess.getText());
+		contentValues.put(FROM, mess.getFrom());
+		contentValues.put(WHEN, mess.getWhen());
 		
 		db.insert(CHATS_TABLE_NAME, null, contentValues);
 		
 		db.close();
 	}
-	public void removeChat(Chat chat) {
+	
+	
+	public void removeChat(Message mess) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		
-		ContentValues contentValues = new ContentValues();
-		contentValues.remove(CHAT_ID);
-		contentValues.remove(CHAT_NAME);
-		
 		db.delete(CHATS_TABLE_NAME, CHAT_ID, null);
-		
 		db.close();
 	}
 	
-	public void addFriend(Friend friend) {
+	public void addFriend(FriendInfo friend) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues contentValues = new ContentValues();
-		contentValues.put(FRIEND_ID, friend.getFriendID());
-		contentValues.put(FRIEND_NAME, friend.getFriendName());
+		contentValues.put(FRIEND_ID, friend.getId());
+		contentValues.put(FRIEND_NAME, friend.getUsername());
+		contentValues.put(FRIEND_EMAIL, friend.getEmail());
 		
 		db.insert(FRIENDS_TABLE_NAME, null, contentValues);
 		
@@ -101,11 +105,6 @@ public class Database extends SQLiteOpenHelper {
 	}
 	public void removeFriend(Friend friend) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		
-		ContentValues contentValues = new ContentValues();
-		contentValues.remove(FRIEND_ID);
-		contentValues.remove(FRIEND_NAME);
-		
 		db.delete(FRIENDS_TABLE_NAME, FRIEND_ID + "=?", new String[]{ Integer.toString(friend.getFriendID()) });
 		
 		db.close();
@@ -142,7 +141,7 @@ public class Database extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String SELECT_CHATS_QUERY;
 		if (friendID != -1)
-			SELECT_CHATS_QUERY = "SELECT c." + CHAT_ID + ", "+ CHAT_NAME + " FROM " + CHATS_TABLE_NAME + " c, " + ASSOCIATIONS_CHAT_FRIEND_TABLE_NAME + " act"
+			SELECT_CHATS_QUERY = "SELECT c." + CHAT_ID + ", "+ CHAT_TEXT + " FROM " + CHATS_TABLE_NAME + " c, " + ASSOCIATIONS_CHAT_FRIEND_TABLE_NAME + " act"
 				+ " WHERE act." + FRIEND_ID + "=" + friendID + " AND c." + CHAT_ID + " = act." + CHAT_ID;
 		else
 			SELECT_CHATS_QUERY = "SELECT * FROM " + CHATS_TABLE_NAME; 

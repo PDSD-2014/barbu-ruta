@@ -1,9 +1,15 @@
 package ro.pub.cs.brtalk.services;
 
 
+import java.util.ArrayList;
+import java.util.Timer;
+
 import ro.pub.cs.brtalk.communication.Socket;
 import ro.pub.cs.brtalk.interfaces.IManagerApp;
 import ro.pub.cs.brtalk.interfaces.ISocket;
+import ro.pub.cs.brtalk.tools.FriendInfo;
+import ro.pub.cs.brtalk.tools.Message;
+import ro.pub.cs.brtalk.tools.ParseXMLFile;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
@@ -20,6 +26,8 @@ public class IMService extends Service implements IManagerApp {
 	private String username = null;
 	private String password = null;
 	private ISocket socket = new Socket();
+	private Database db; 
+	private Timer timer;
 	
 	public class IMBinder extends Binder{
 		public IManagerApp getService(){
@@ -34,6 +42,9 @@ public class IMService extends Service implements IManagerApp {
 		// TODO Auto-generated method stub
 		mNM = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 		mConMan = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
+		db = Database.getInstance(this);
+		
+		timer = new Timer();
 		
 	}
 
@@ -90,7 +101,31 @@ public class IMService extends Service implements IManagerApp {
 			authenticatedUser = true;
 			this.username = username;
 			this.password = password;
+		}else{
+			return result;
 		}
+		
+		/*
+		 * Now that the user is authenticated let's get some updates
+		 */
+		
+	/*	String params1 = params + "&messages=yes";
+		String newMessages = socket.sendHttpRequest(params1);
+		ParseXMLFile pXMLMe = new ParseXMLFile(newMessages, true, false);
+		ArrayList<Message> messageList = pXMLMe.getMessages();
+		for(int cnt = 0; cnt < messageList.size(); cnt++){
+			db.addChat(messageList.get(cnt));
+		}
+		
+		String params2 = params + "&friends=yes"; 
+		String newFriends = socket.sendHttpRequest(params2);
+		ParseXMLFile pXMLFr = new ParseXMLFile(newFriends, false, true);
+		ArrayList<FriendInfo> friendList = pXMLFr.getFriends();
+		for(int cnt = 0; cnt < friendList.size(); cnt++){
+			db.addFriend(friendList.get(cnt));
+		}
+		*/
+		
 		return result;
 	}
 	

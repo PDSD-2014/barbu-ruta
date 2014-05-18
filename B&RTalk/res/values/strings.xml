@@ -17,11 +17,8 @@
     <string name="all_fields">Please complete all fileds!</string>
     <string name="title_activity_sign_up">SignUp</string>
     <string name="password_mismatch">Password is not correct!</string>
-
-   	<string name="signin_error">Could not sign in!</string>
-	<string name="incorect_user_pass">Incorrect username/password!</string>
-    
-
+    <string name="signin_error">Could not sign in!</string>
+    <string name="incorect_user_pass">Incorrect username/password!</string>
     <string name="signup_error">signup_error</string>
     <string name="already_user">already_user</string>
     <string name="success_signup">success_signup</string>
@@ -35,5 +32,7 @@
     <string name="add_friend">Add Friend</string>
     <string name="no_chats">You don\'t have any chats.</string>
     <string name="no_friends">You don\'t have any friends.</string>
+    <string name="title_activity_friend_list">FriendList</string>
+    <string name="title_activity_add_friend">AddFriend</string>
 
 </resources>
