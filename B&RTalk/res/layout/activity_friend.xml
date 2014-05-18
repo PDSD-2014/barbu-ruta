@@ -8,12 +8,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Friend" >
 
-    <TextView
+<TextView
+        android:id="@+id/friend_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="146dp"
-        android:text="@string/no_friends" />
+        android:text="@string/friends" 
+       	android:layout_marginLeft="30dp"
+     />
 
 </RelativeLayout>

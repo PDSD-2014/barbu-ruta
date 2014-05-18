@@ -13,13 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:dividerHeight="5dp"   />
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="146dp"
-        android:text="@string/no_chats" />
+
       
      <Button
          android:id="@+id/friends_button"
@@ -38,6 +32,15 @@
          android:layout_alignParentBottom="true"
          android:layout_alignParentLeft="true"
          android:text="@string/new_chat" />
+     
+    <TextView
+        android:id="@+id/no_chats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="146dp"
+        android:text="@string/no_chats" />
      
 
 </RelativeLayout>

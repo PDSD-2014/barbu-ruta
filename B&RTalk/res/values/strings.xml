@@ -32,8 +32,9 @@
     <string name="title_activity_friends">Friends</string>
     <string name="new_chat">New Chat</string>
     <string name="friends">Friends</string>
+    <string name="chats">Chats</string>
     <string name="add_friend">Add Friend</string>
-    <string name="no_chats">You don\'t have any chats.</string>
     <string name="no_friends">You don\'t have any friends.</string>
+    <string name="no_chats">You don\'t have any chats.</string>
 
 </resources>

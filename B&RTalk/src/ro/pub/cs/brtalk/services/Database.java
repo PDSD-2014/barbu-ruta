@@ -76,18 +76,6 @@ public class Database extends SQLiteOpenHelper {
 		
 		db.close();
 	}
-	public void removeChat(Chat chat) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		
-		ContentValues contentValues = new ContentValues();
-		contentValues.remove(CHAT_ID);
-		contentValues.remove(CHAT_NAME);
-		
-		db.delete(CHATS_TABLE_NAME, CHAT_ID, null);
-		
-		db.close();
-	}
-	
 	public void addFriend(Friend friend) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -99,6 +87,21 @@ public class Database extends SQLiteOpenHelper {
 		
 		db.close();
 	}
+	
+	
+	public void removeChat(Chat chat) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		
+		ContentValues contentValues = new ContentValues();
+		contentValues.remove(CHAT_ID);
+		contentValues.remove(CHAT_NAME);
+		
+		db.delete(CHATS_TABLE_NAME, CHAT_ID + "=?", new String[]{ Integer.toString(chat.getChatID()) });
+		
+		db.close();
+	}
+	
+	
 	public void removeFriend(Friend friend) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
@@ -111,16 +114,23 @@ public class Database extends SQLiteOpenHelper {
 		db.close();
 	}
 	
-	public void deleteAllFriends(Friend friend) {
+	public void deleteAllFriends() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(FRIENDS_TABLE_NAME, null, null);
+	}
+	
+	public void deleteAllChats() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(CHATS_TABLE_NAME, null, null);
 	}
 
 	
-	public List<Friend> selectFriends(int chatID) {
+	public List<Friend> selectFriends(int ID) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String SELECT_FRIENDS_QUERY;
-		if (chatID != -1)
+		if (ID != -1)
 			SELECT_FRIENDS_QUERY = "SELECT t." + FRIEND_ID + ", " + FRIEND_NAME + " FROM " + FRIENDS_TABLE_NAME + " t, " + ASSOCIATIONS_CHAT_FRIEND_TABLE_NAME + " act"
-				+ " WHERE act." + CHAT_ID + "=" + chatID + " AND t." + FRIEND_ID + " = act." + FRIEND_ID;
+				+ " WHERE act." + CHAT_ID + "=" + ID + " AND t." + FRIEND_ID + " = act." + FRIEND_ID;
 		else
 			SELECT_FRIENDS_QUERY = "SELECT * FROM " + FRIENDS_TABLE_NAME;
 		
@@ -138,12 +148,12 @@ public class Database extends SQLiteOpenHelper {
 		return result;
 	}
 	
-	public List<Chat> selectChats(int friendID) {
+	public List<Chat> selectChats(int ID) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String SELECT_CHATS_QUERY;
-		if (friendID != -1)
+		if (ID != -1)
 			SELECT_CHATS_QUERY = "SELECT c." + CHAT_ID + ", "+ CHAT_NAME + " FROM " + CHATS_TABLE_NAME + " c, " + ASSOCIATIONS_CHAT_FRIEND_TABLE_NAME + " act"
-				+ " WHERE act." + FRIEND_ID + "=" + friendID + " AND c." + CHAT_ID + " = act." + CHAT_ID;
+				+ " WHERE act." + CHAT_ID + "=" + ID + " AND c." + CHAT_ID + " = act." + CHAT_ID;
 		else
 			SELECT_CHATS_QUERY = "SELECT * FROM " + CHATS_TABLE_NAME; 
 		Cursor cursor = db.rawQuery(SELECT_CHATS_QUERY, null);
