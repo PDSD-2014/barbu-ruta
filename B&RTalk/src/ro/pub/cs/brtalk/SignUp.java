@@ -2,6 +2,7 @@ package ro.pub.cs.brtalk;
 
 import ro.pub.cs.brtalk.interfaces.IManagerApp;
 import ro.pub.cs.brtalk.services.IMService;
+import ro.pub.cs.brtalk.tools.ParseXMLFile;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;

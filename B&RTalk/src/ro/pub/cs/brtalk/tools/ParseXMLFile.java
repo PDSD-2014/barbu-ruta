@@ -42,7 +42,8 @@ public class ParseXMLFile {
 					Element element = (Element) nNode;
 					String username = element.getElementsByTagName("username").item(0).getTextContent();
 					String email = element.getElementsByTagName("email").item(0).getTextContent();
-					friendsList.add(new FriendInfo(username, email));
+					String id = element.getElementsByTagName("id").item(0).getTextContent();
+					friendsList.add(new FriendInfo(username, email, Integer.parseInt(id)));
 				}
 			}
 		} catch (Exception e) {
@@ -70,10 +71,11 @@ public class ParseXMLFile {
 				Node nNode = nList.item(i);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE){
 					Element element = (Element) nNode;
+					String id = element.getElementsByTagName("id").item(0).getTextContent();
 					String from = element.getElementsByTagName("from").item(0).getTextContent();
 					String text = element.getElementsByTagName("text").item(0).getTextContent();
 					String when = element.getElementsByTagName("when").item(0).getTextContent();
-					messageList.add(new Message(from, text, when));
+					messageList.add(new Message(from, text, when,Integer.parseInt(id)));
 				}
 			}
 		} catch (Exception e) {

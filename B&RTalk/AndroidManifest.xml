@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="14"
         android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -49,6 +49,14 @@
             android:name="ro.pub.cs.brtalk.Friends"
             android:label="@string/title_activity_friends" >
 
+        </activity>
+        <activity
+            android:name="ro.pub.cs.brtalk.FriendList"
+            android:label="@string/title_activity_friend_list" >
+        </activity>
+        <activity
+            android:name="ro.pub.cs.brtalk.AddFriend"
+            android:label="@string/title_activity_add_friend" >
         </activity>
     </application>
 

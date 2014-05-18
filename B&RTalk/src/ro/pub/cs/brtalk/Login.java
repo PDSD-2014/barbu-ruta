@@ -51,7 +51,7 @@ public class Login extends Activity {
 			iMService = ((IMService.IMBinder)service).getService();
 			if (iMService.isUserAuthenticated() == true){
 				Toast.makeText(Login.this, "User autentificat!", Toast.LENGTH_LONG).show();
-				Intent i = new Intent(Login.this, Chats.class);
+				Intent i = new Intent(Login.this, FriendList.class);
 				startActivity(i);
 				Login.this.finish();
 			}
@@ -115,7 +115,7 @@ public class Login extends Activity {
 										Toast.makeText(Login.this, R.string.incorect_user_pass, Toast.LENGTH_LONG).show();
 									}else{
 										//here activity will be changed 
-										Intent i = new Intent(Login.this, Chats.class);
+										Intent i = new Intent(Login.this, FriendList.class);
 										startActivity(i);
 										finish();
 									}

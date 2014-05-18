@@ -129,7 +129,7 @@ public class Friends extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				Friend friend = new Friend(database.generateNextID(Database.FRIENDS_TABLE_NAME, Database.FRIEND_ID),"Alex");
-				database.addFriend(friend);
+				//database.addFriend(friend);
 				friendArrayAdapter.add(friend);
 				no_friends.setVisibility(View.INVISIBLE);
 			}

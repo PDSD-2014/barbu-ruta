@@ -4,10 +4,20 @@ public class FriendInfo {
 	
 	private String username;
 	private String email;
+	private int id;
 	
-	public FriendInfo(String username, String email){
+	public FriendInfo(String username, String email,int id){
 		this.username = username;
 		this.email = email;
+		this.id = id;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getUsername() {

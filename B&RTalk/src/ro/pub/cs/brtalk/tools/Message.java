@@ -5,11 +5,21 @@ public class Message {
 	private String from;
 	private String text;
 	private String when;
+	private int id;
 	
-	public Message(String from, String text, String when){
+	public Message(String from, String text, String when, int id){
 		this.from = from;
 		this.text = text;
 		this.when = when;
+		this.id = id;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getFrom() {
