@@ -1,6 +1,9 @@
 package ro.pub.cs.brtalk;
 
+import java.util.ArrayList;
+
 import ro.pub.cs.brtalk.interfaces.IManagerApp;
+import ro.pub.cs.brtalk.services.Database;
 import ro.pub.cs.brtalk.services.IMService;
 import ro.pub.cs.brtalk.tools.FriendInfo;
 import android.app.ListActivity;
@@ -8,6 +11,7 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,6 +33,7 @@ public class FriendList extends ListActivity {
 	
 	private IManagerApp imService = null;
 	private FriendListAdapter friendAdapter;
+	private Database db;
 	
 	private class FriendListAdapter extends BaseAdapter{
 
@@ -110,6 +115,8 @@ public class FriendList extends ListActivity {
 		
 	}
 	
+	MessageReceiver receiver = new MessageReceiver();
+	
 	private ServiceConnection mConnection = new ServiceConnection() {
 		
 		@Override
@@ -131,7 +138,7 @@ public class FriendList extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_friend_list);
-		
+		db = Database.getInstance(this);
 		friendAdapter = new FriendListAdapter(this);
 		
 		
@@ -152,21 +159,27 @@ public class FriendList extends ListActivity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		unbindService(mConnection);
+		unregisterReceiver(receiver);
 		super.onPause();
 	}
 
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
+		updateData();
 		super.onResume();
 		bindService(new Intent(FriendList.this, IMService.class),mConnection, Context.BIND_AUTO_CREATE);
+		IntentFilter i = new IntentFilter();
+		i.addAction("NEWFRIENDS");
+		registerReceiver(receiver, i);
+		
 	}
 
 	
 	public void updateData(){
-		FriendInfo fi = new FriendInfo("ionut", "ionut", 5);
-		FriendInfo[] fr = new FriendInfo[1];
-		fr[0] = fi;
+		
+		FriendInfo[] fr = db.selectFriends();
+		
 		friendAdapter.setFriendList(fr);
 		setListAdapter(friendAdapter);
 	}

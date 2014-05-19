@@ -12,6 +12,14 @@ public class FriendInfo {
 		this.id = id;
 	}
 
+	public FriendInfo(){
+		
+	}
+	
+	public FriendInfo(String username){
+		this.username = username;
+	}
+	
 	public int getId() {
 		return id;
 	}

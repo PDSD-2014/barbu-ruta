@@ -97,7 +97,7 @@ public class Database extends SQLiteOpenHelper {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(FRIEND_ID, friend.getId());
 		contentValues.put(FRIEND_NAME, friend.getUsername());
-		contentValues.put(FRIEND_EMAIL, friend.getEmail());
+//		contentValues.put(FRIEND_EMAIL, friend.getEmail());
 		
 		db.insert(FRIENDS_TABLE_NAME, null, contentValues);
 		
@@ -118,27 +118,28 @@ public class Database extends SQLiteOpenHelper {
 	}
 
 	
-	public List<Friend> selectFriends(int chatID) {
+	public FriendInfo[] selectFriends() {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String SELECT_FRIENDS_QUERY;
-		if (chatID != -1)
-			SELECT_FRIENDS_QUERY = "SELECT t." + FRIEND_ID + ", " + FRIEND_NAME + " FROM " + FRIENDS_TABLE_NAME + " t, " + ASSOCIATIONS_CHAT_FRIEND_TABLE_NAME + " act"
-				+ " WHERE act." + CHAT_ID + "=" + chatID + " AND t." + FRIEND_ID + " = act." + FRIEND_ID;
-		else
-			SELECT_FRIENDS_QUERY = "SELECT * FROM " + FRIENDS_TABLE_NAME;
+		SELECT_FRIENDS_QUERY = "SELECT " + FRIEND_NAME + " FROM " + FRIENDS_TABLE_NAME;
 		
 		Log.d("MY_TAG", SELECT_FRIENDS_QUERY);
 		Cursor cursor = db.rawQuery(SELECT_FRIENDS_QUERY, null);
-		ArrayList<Friend> result = new ArrayList<Friend>();
+		ArrayList<FriendInfo> result = new ArrayList<FriendInfo>();
 		if (cursor.moveToFirst()) {			
 			do {
-				Friend friend = new Friend();
-				friend.setFriendID(Integer.parseInt(cursor.getString(0)));
-				friend.setFriendName(cursor.getString(1));
+				FriendInfo friend = new FriendInfo(cursor.getString(0));
 				result.add(friend);
 			} while (cursor.moveToNext());
 		}
-		return result;
+		
+		FriendInfo[] myres = new FriendInfo[result.size()];
+		
+		for(int k = 0; k < result.size(); k++){
+			myres[k] = result.get(k);
+		}
+		
+		return myres;
 	}
 	
 	public List<Chat> selectChats(int friendID) {

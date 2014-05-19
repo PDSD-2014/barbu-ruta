@@ -187,11 +187,19 @@ public class IMService extends Service implements IManagerApp {
 
 
 	@Override
-	public String friendAdd(String username) {
+	public String friendAdd(String user) {
 		// TODO Auto-generated method stub
 		String result = null;
-		String params = "type=addfriend&username=" + username;
+		String params = "type=addfriend&username=" + user + "&fromwho=" + this.username;
 		result = socket.sendHttpRequest(params);
+		
+		String[] newTemp = result.split(" ");
+		FriendInfo ala = new FriendInfo(newTemp[0], newTemp[1], Integer.parseInt(newTemp[2]));
+		db.addFriend(ala);
+		Intent j = new Intent("NEWFRIENDS");
+		j.putExtra("FRIENDS", result);
+		sendBroadcast(j);
+		
 		return result;
 	}
 	
