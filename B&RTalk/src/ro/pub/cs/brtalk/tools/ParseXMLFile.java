@@ -35,7 +35,7 @@ public class ParseXMLFile {
 			InputSource is = new InputSource(new StringReader(input));
 			Document doc = dBuilder.parse(is);
 			//result = doc.getDocumentElement().getNodeName();
-			NodeList nList = doc.getElementsByTagName("friend");
+			NodeList nList = doc.getElementsByTagName("friends");
 			for (int i = 0; i < nList.getLength(); i++){
 				Node nNode = nList.item(i);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE){

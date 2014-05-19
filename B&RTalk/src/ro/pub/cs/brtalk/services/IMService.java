@@ -120,6 +120,7 @@ public class IMService extends Service implements IManagerApp {
 		for(int cnt = 0; cnt < messageList.size(); cnt++){
 			db.addChat(messageList.get(cnt));
 		}
+		
 		Intent i = new Intent("MESAJENOI");
 		i.putExtra("MESAJE", newMessages);
 		sendBroadcast(i);
