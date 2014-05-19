@@ -23,6 +23,14 @@ public class Message {
 		this.dir = dir;
 	}
 	
+	public Message(String from, String text, int id, String dir){
+		this.from = from;
+		this.text = text;
+//		this.when = when;
+		this.id = id;
+		this.dir = dir;
+	}
+	
 	public Message(){
 		
 	}

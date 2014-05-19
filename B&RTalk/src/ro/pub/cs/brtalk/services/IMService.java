@@ -1,6 +1,8 @@
 package ro.pub.cs.brtalk.services;
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -115,27 +117,33 @@ public class IMService extends Service implements IManagerApp {
 		
 		String params1 = params + "&messages=yes";
 		String newMessages = socket.sendHttpRequest(params1);
-		ParseXMLFile pXMLMe = new ParseXMLFile(newMessages, true, false);
-		ArrayList<Message> messageList = pXMLMe.getMessages();
-		for(int cnt = 0; cnt < messageList.size(); cnt++){
-			db.addChat(messageList.get(cnt));
+		if (!newMessages.equals("NU")){
+			ParseXMLFile pXMLMe = new ParseXMLFile(newMessages, true, false);
+			ArrayList<Message> messageList = pXMLMe.getMessages();
+			for(int cnt = 0; cnt < messageList.size(); cnt++){
+				db.addChat(messageList.get(cnt));
+			}
+		
+			Intent i = new Intent("MESAJENOI");
+			i.putExtra("MESAJE", newMessages);
+			sendBroadcast(i);
 		}
 		
-		Intent i = new Intent("MESAJENOI");
-		i.putExtra("MESAJE", newMessages);
-		sendBroadcast(i);
+		
 		
 		String params2 = params + "&friends=yes"; 
 		String newFriends = socket.sendHttpRequest(params2);
-		ParseXMLFile pXMLFr = new ParseXMLFile(newFriends, false, true);
-		ArrayList<FriendInfo> friendList = pXMLFr.getFriends();
-		for(int cnt = 0; cnt < friendList.size(); cnt++){
-			db.addFriend(friendList.get(cnt));
+		if (!newFriends.equals("NU")){
+			ParseXMLFile pXMLFr = new ParseXMLFile(newFriends, false, true);
+			ArrayList<FriendInfo> friendList = pXMLFr.getFriends();
+			for(int cnt = 0; cnt < friendList.size(); cnt++){
+				db.addFriend(friendList.get(cnt));
+			}
+			Intent j = new Intent("NEWFRIENDS");
+			j.putExtra("FRIENDS", newFriends);
+			sendBroadcast(j);
 		}
-		Intent j = new Intent("NEWFRIENDS");
-		j.putExtra("FRIENDS", newFriends);
-		sendBroadcast(j);
-		
+			
 		timer.schedule(new TimerTask() {
 			
 			@Override
@@ -144,24 +152,27 @@ public class IMService extends Service implements IManagerApp {
 				
 				String newMessages = IMService.this.getMessages();
 				String newFriends = IMService.this.getFriends();
-				ParseXMLFile pXMLMe = new ParseXMLFile(newMessages, true, false);
-				ArrayList<Message> messageList = pXMLMe.getMessages();
-				for(int cnt = 0; cnt < messageList.size(); cnt++){
-					db.addChat(messageList.get(cnt));
+				if (!newMessages.equals("NU")){
+					ParseXMLFile pXMLMe = new ParseXMLFile(newMessages, true, false);
+					ArrayList<Message> messageList = pXMLMe.getMessages();
+					for(int cnt = 0; cnt < messageList.size(); cnt++){
+						db.addChat(messageList.get(cnt));
+					}
+					Intent i = new Intent("MESAJENOI");
+					i.putExtra("MESAJE", newMessages);
+					sendBroadcast(i);
 				}
-				Intent i = new Intent("MESAJENOI");
-				i.putExtra("MESAJE", newMessages);
-				sendBroadcast(i);
 				
-				ParseXMLFile pXMLFr = new ParseXMLFile(newFriends, false, true);
-				ArrayList<FriendInfo> friendList = pXMLFr.getFriends();
-				for(int cnt = 0; cnt < friendList.size(); cnt++){
-					db.addFriend(friendList.get(cnt));
+				if (!newFriends.equals("NU")){
+					ParseXMLFile pXMLFr = new ParseXMLFile(newFriends, false, true);
+					ArrayList<FriendInfo> friendList = pXMLFr.getFriends();
+					for(int cnt = 0; cnt < friendList.size(); cnt++){
+						db.addFriend(friendList.get(cnt));
+					}
+					Intent j = new Intent("NEWFRIENDS");
+					j.putExtra("FRIENDS", newFriends);
+					sendBroadcast(j);
 				}
-				Intent j = new Intent("NEWFRIENDS");
-				j.putExtra("FRIENDS", newFriends);
-				sendBroadcast(j);
-				
 			}
 		}, 15000, 15000);
 		
@@ -200,6 +211,23 @@ public class IMService extends Service implements IManagerApp {
 		j.putExtra("FRIENDS", result);
 		sendBroadcast(j);
 		
+		return result;
+	}
+
+
+	@Override
+	public String sendMessage(String to, String text) {
+		// TODO Auto-generated method stub
+		String result = null;
+		String params;
+		try {
+			params = "type=sendmessage&from=" + username + "&to=" + to + "&text=" + URLEncoder.encode(text,"UTF-8");
+			result = socket.sendHttpRequest(params);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
 		return result;
 	}
 	

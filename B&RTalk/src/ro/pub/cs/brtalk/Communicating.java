@@ -1,13 +1,19 @@
 package ro.pub.cs.brtalk;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import ro.pub.cs.brtalk.interfaces.IManagerApp;
 import ro.pub.cs.brtalk.services.Database;
 import ro.pub.cs.brtalk.services.IMService;
 import ro.pub.cs.brtalk.tools.Message;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -27,6 +33,8 @@ public class Communicating extends Activity {
 	private Button send;
 	private IManagerApp imService ;
 	private Database db;
+	public int lastID = 0;
+	String message;
 	
 	private ServiceConnection mConnection = new ServiceConnection() {
 		
@@ -60,11 +68,11 @@ public class Communicating extends Activity {
 		
 		for (int k = history.length-1; k >=0; k--){
 			if (history[k].getDir().equals("venit")){
-				int ir = 0;
-				while(ir < 40){
-					comm.setText(comm.getText() + "\n" + commWith + ":" + history[k].getText() + " "+ir);
-					ir++;
-				}
+//				int ir = 0;
+//				while(ir < 40){
+				comm.setText(comm.getText() + "\n" + commWith + ":" + history[k].getText());
+//					ir++;
+//				}
 			}else{
 				comm.setText(comm.getText() + "\nME:" + history[k].getText());
 			}
@@ -75,17 +83,24 @@ public class Communicating extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				String message = whereIWrite.getText().toString();
+				message = whereIWrite.getText().toString();
+				whereIWrite.setText("");
+				Message m = new Message(commWith,message,getDateTime(),lastID,"iesit");
+				
+				db.addChat(m);
+				comm.setText(comm.getText() + "\nME:" + message); 
 				Thread sendMessage = new Thread(){
 					
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
+						imService.sendMessage(commWith, message);
+						
 						
 					}
 					
 				};
-				
+				sendMessage.start();
 				
 			}
 		});
@@ -118,6 +133,7 @@ public class Communicating extends Activity {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		unbindService(mConnection);
+		unregisterReceiver(mr);
 		super.onPause();
 		
 	}
@@ -127,8 +143,50 @@ public class Communicating extends Activity {
 		// TODO Auto-generated method stub
 		super.onResume();
 		bindService(new Intent(Communicating.this, IMService.class),mConnection, Context.BIND_AUTO_CREATE);
+		IntentFilter i = new IntentFilter();
+		i.addAction("MESAJENOI");
+		registerReceiver(mr, i);
 	}
 
+	
+	public class MessageReceiver extends BroadcastReceiver{
+
+		@Override
+		public void onReceive(Context arg0, Intent arg1) {
+			// TODO Auto-generated method stub
+			Bundle extra = arg1.getExtras();
+			if (extra != null){
+				String action = arg1.getAction();
+				if (action.equals("MESAJENOI")){
+					comm.setText("");
+					Message[] history = db.selectChats(commWith);
+					
+					for (int k = history.length-1; k >=0; k--){
+						if (history[k].getDir().equals("venit")){
+//							int ir = 0;
+//							while(ir < 40){
+							comm.setText(comm.getText() + "\n" + commWith + ":" + history[k].getText());
+//								ir++;
+//							}
+						}else{
+							comm.setText(comm.getText() + "\nME:" + history[k].getText());
+						}
+					}
+				}
+			}
+			
+		}
+		
+	};
+	
+	private MessageReceiver mr = new MessageReceiver();
+	
+	private String getDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
+}
 	
 
 }

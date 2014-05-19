@@ -13,6 +13,7 @@ public interface IManagerApp {
 	public String signUpUser(String username, String password, String email);
 	public String signInUser(String username, String password);
 	public String friendAdd(String username);
+	public String sendMessage(String to, String text);
 	
 	
 }

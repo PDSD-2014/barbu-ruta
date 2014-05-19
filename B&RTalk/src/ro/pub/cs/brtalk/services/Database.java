@@ -47,7 +47,7 @@ public class Database extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 
 		String CREATE_CHATS_TABLE = "CREATE TABLE " + CHATS_TABLE_NAME + " ( "
-				+ CHAT_ID + " INTEGER PRIMARY KEY, "
+				+ CHAT_ID + " INTEGER, "
 				+ CHAT_TEXT + " TEXT, " + FROM  + " TEXT, " + WHEN + " TEXT, " + DIR + " TEXT)" ; 
 		String CREATE_FRIENDS_TABLE = "CREATE TABLE " + FRIENDS_TABLE_NAME + "("
 				+ FRIEND_ID + " INTEGER PRIMARY KEY, "
@@ -147,7 +147,7 @@ public class Database extends SQLiteOpenHelper {
 	public Message[] selectChats(String username) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String SELECT_CHATS_QUERY;
-		SELECT_CHATS_QUERY = "SELECT * FROM " + CHATS_TABLE_NAME + " WHERE " + FROM + " = '" + username + "'"; // "' ORDER BY " + WHEN + " DESC LIMIT 10" ; 
+		SELECT_CHATS_QUERY = "SELECT * FROM " + CHATS_TABLE_NAME + " WHERE " + FROM + " = '" + username + "' ORDER BY " + WHEN + " DESC LIMIT 50" ; 
 		Cursor cursor = db.rawQuery(SELECT_CHATS_QUERY, null);
 		ArrayList<Message> result = new ArrayList<Message>();
 		if (cursor.moveToFirst()) {
