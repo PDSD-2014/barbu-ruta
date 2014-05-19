@@ -75,6 +75,17 @@ public class Communicating extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				String message = whereIWrite.getText().toString();
+				Thread sendMessage = new Thread(){
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						
+					}
+					
+				};
+				
 				
 			}
 		});
