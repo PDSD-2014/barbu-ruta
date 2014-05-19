@@ -24,8 +24,8 @@ public class Database extends SQLiteOpenHelper {
 	public static final String CHATS_TABLE_NAME = "chats";
 	public static final String CHAT_ID = "chat_id";
 	public static final String CHAT_TEXT = "name";
-	public static final String FROM = "from";
-	public static final String WHEN = "when";
+	public static final String FROM = "fromm";
+	public static final String WHEN = "whenn";
 	public static final String FRIENDS_TABLE_NAME = "friends";
 	public static final String FRIEND_ID = "friend_id";
 	public static final String FRIEND_NAME = "name";
@@ -45,7 +45,7 @@ public class Database extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 
-		String CREATE_CHATS_TABLE = "CREATE TABLE " + CHATS_TABLE_NAME + "("
+		String CREATE_CHATS_TABLE = "CREATE TABLE " + CHATS_TABLE_NAME + " ( "
 				+ CHAT_ID + " INTEGER PRIMARY KEY, "
 				+ CHAT_TEXT + " TEXT, " + FROM  + " TEXT, " + WHEN + " TEXT)" ; 
 		String CREATE_FRIENDS_TABLE = "CREATE TABLE " + FRIENDS_TABLE_NAME + "("
@@ -111,6 +111,10 @@ public class Database extends SQLiteOpenHelper {
 	}
 	
 	public void deleteAllFriends(Friend friend) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(FRIENDS_TABLE_NAME, null, null);
+		
+		db.close();
 	}
 
 	

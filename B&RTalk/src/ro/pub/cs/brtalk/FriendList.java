@@ -1,11 +1,10 @@
 package ro.pub.cs.brtalk;
 
-import java.util.ArrayList;
-
 import ro.pub.cs.brtalk.interfaces.IManagerApp;
 import ro.pub.cs.brtalk.services.IMService;
 import ro.pub.cs.brtalk.tools.FriendInfo;
 import android.app.ListActivity;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -14,9 +13,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -91,6 +89,24 @@ public class FriendList extends ListActivity {
 		
 	}
 	
+	public class MessageReceiver extends BroadcastReceiver{
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			Log.i("FRIENDS", "PRIMIT NOI INFO");
+			Bundle info = intent.getExtras();
+			if (info != null){
+				String action = intent.getAction();
+				if (action.equals("NEWFRIENDS")){
+					FriendList.this.updateData();
+				}
+			}
+			
+		}
+		
+	}
+	
 	private ServiceConnection mConnection = new ServiceConnection() {
 		
 		@Override
@@ -106,6 +122,8 @@ public class FriendList extends ListActivity {
 		}
 	};
 	
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -113,11 +131,7 @@ public class FriendList extends ListActivity {
 		
 		friendAdapter = new FriendListAdapter(this);
 		
-		FriendInfo fi = new FriendInfo("ionut", "ionut", 5);
-		FriendInfo[] fr = new FriendInfo[1];
-		fr[0] = fi;
-		friendAdapter.setFriendList(fr);
-		setListAdapter(friendAdapter);
+		
 		
 	}
 
@@ -146,6 +160,12 @@ public class FriendList extends ListActivity {
 	}
 
 	
-	
+	public void updateData(){
+		FriendInfo fi = new FriendInfo("ionut", "ionut", 5);
+		FriendInfo[] fr = new FriendInfo[1];
+		fr[0] = fi;
+		friendAdapter.setFriendList(fr);
+		setListAdapter(friendAdapter);
+	}
 
 }

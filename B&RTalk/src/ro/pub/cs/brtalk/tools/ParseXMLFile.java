@@ -65,7 +65,7 @@ public class ParseXMLFile {
 			dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			InputSource is = new InputSource(new StringReader(input));
 			Document doc = dBuilder.parse(is);
-			//result = doc.getDocumentElement().getNodeName();
+			//result = doc.g	etDocumentElement().getNodeName();
 			NodeList nList = doc.getElementsByTagName("message");
 			for (int i = 0; i < nList.getLength(); i++){
 				Node nNode = nList.item(i);
