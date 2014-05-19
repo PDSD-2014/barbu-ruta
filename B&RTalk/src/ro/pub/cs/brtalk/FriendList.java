@@ -15,12 +15,15 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
 
 public class FriendList extends ListActivity {
 	
@@ -167,5 +170,34 @@ public class FriendList extends ListActivity {
 		friendAdapter.setFriendList(fr);
 		setListAdapter(friendAdapter);
 	}
+	
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {		
+		boolean result = super.onCreateOptionsMenu(menu);		
+
+		menu.add(0, 0, 0, "Add Friend");
+		
+		
+		return result;
+	}
+	
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) 
+	{		
+
+		switch(item.getItemId()) 
+		{	  
+			case 0:
+			{
+				Intent i = new Intent(FriendList.this, AddFriend.class);
+				startActivity(i);
+				return true;
+			}		
+						
+		}
+
+		return super.onMenuItemSelected(featureId, item);		
+	}	
 
 }

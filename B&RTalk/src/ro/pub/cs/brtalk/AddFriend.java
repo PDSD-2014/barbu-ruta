@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,8 @@ public class AddFriend extends Activity {
 	private Button cancel;
 	private Button submit;
 	private IManagerApp imService = null;
+	
+	Handler handler = new Handler();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +48,19 @@ public class AddFriend extends Activity {
 					public void run() {
 						// TODO Auto-generated method stub
 						result = imService.friendAdd(text.getText().toString());
-						finish();
+						handler.post(new Runnable() {
+							
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								finish();
+							}
+						});
+						
 					}
 					
 				};
+				sendFriend.start();
 			}
 		});
 		

@@ -78,6 +78,9 @@ public class IMService extends Service implements IManagerApp {
 	@Override
 	public void exit() {
 		// TODO Auto-generated method stub
+		timer.cancel();
+		socket.exit();
+		socket = null;
 		this.stopSelf();
 	}
 
