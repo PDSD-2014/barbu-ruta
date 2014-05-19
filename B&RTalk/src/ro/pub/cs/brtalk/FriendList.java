@@ -149,7 +149,7 @@ public class FriendList extends ListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		// TODO Auto-generated method stub
 		super.onListItemClick(l, v, position, id);
-		Intent intent = new Intent(this,Chats.class);
+		Intent intent = new Intent(this,Communicating.class);
 		FriendInfo friend = friendAdapter.getItem(position);
 		intent.putExtra("username", friend.getUsername());
 		startActivity(intent);

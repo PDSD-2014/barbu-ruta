@@ -35,5 +35,7 @@
     <string name="no_chats">You don\'t have any chats.</string>
     <string name="title_activity_friend_list">FriendList</string>
     <string name="title_activity_add_friend">AddFriend</string>
+    <string name="title_activity_communicating">Communicating</string>
+    <string name="send">Send</string>
 
 </resources>

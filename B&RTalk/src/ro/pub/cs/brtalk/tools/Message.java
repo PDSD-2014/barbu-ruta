@@ -6,12 +6,25 @@ public class Message {
 	private String text;
 	private String when;
 	private int id;
+	private String dir;
 	
 	public Message(String from, String text, String when, int id){
 		this.from = from;
 		this.text = text;
 		this.when = when;
 		this.id = id;
+	}
+	
+	public Message(String from, String text, String when, int id, String dir){
+		this.from = from;
+		this.text = text;
+		this.when = when;
+		this.id = id;
+		this.dir = dir;
+	}
+	
+	public Message(){
+		
 	}
 
 	public int getId() {
@@ -44,6 +57,14 @@ public class Message {
 
 	public void setWhen(String when) {
 		this.when = when;
+	}
+
+	public String getDir() {
+		return dir;
+	}
+
+	public void setDir(String dir) {
+		this.dir = dir;
 	}
 	
 	

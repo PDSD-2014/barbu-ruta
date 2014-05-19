@@ -30,6 +30,7 @@ public class Database extends SQLiteOpenHelper {
 	public static final String FRIEND_ID = "friend_id";
 	public static final String FRIEND_NAME = "name";
 	public static final String FRIEND_EMAIL = "email";
+	public static final String DIR = "dir";
 
 	public static Database getInstance(Context context) {
 		if (instance == null)
@@ -47,7 +48,7 @@ public class Database extends SQLiteOpenHelper {
 
 		String CREATE_CHATS_TABLE = "CREATE TABLE " + CHATS_TABLE_NAME + " ( "
 				+ CHAT_ID + " INTEGER PRIMARY KEY, "
-				+ CHAT_TEXT + " TEXT, " + FROM  + " TEXT, " + WHEN + " TEXT)" ; 
+				+ CHAT_TEXT + " TEXT, " + FROM  + " TEXT, " + WHEN + " TEXT, " + DIR + " TEXT)" ; 
 		String CREATE_FRIENDS_TABLE = "CREATE TABLE " + FRIENDS_TABLE_NAME + "("
 				+ FRIEND_ID + " INTEGER PRIMARY KEY, "
 				+ FRIEND_NAME + " TEXT, " + FRIEND_EMAIL + "TEXT)";	
@@ -78,6 +79,7 @@ public class Database extends SQLiteOpenHelper {
 		contentValues.put(CHAT_TEXT, mess.getText());
 		contentValues.put(FROM, mess.getFrom());
 		contentValues.put(WHEN, mess.getWhen());
+		contentValues.put(DIR, mess.getDir());
 		
 		db.insert(CHATS_TABLE_NAME, null, contentValues);
 		
@@ -142,25 +144,27 @@ public class Database extends SQLiteOpenHelper {
 		return myres;
 	}
 	
-	public List<Chat> selectChats(int friendID) {
+	public Message[] selectChats(String username) {
 		SQLiteDatabase db = this.getReadableDatabase();
 		String SELECT_CHATS_QUERY;
-		if (friendID != -1)
-			SELECT_CHATS_QUERY = "SELECT c." + CHAT_ID + ", "+ CHAT_TEXT + " FROM " + CHATS_TABLE_NAME + " c, " + ASSOCIATIONS_CHAT_FRIEND_TABLE_NAME + " act"
-				+ " WHERE act." + FRIEND_ID + "=" + friendID + " AND c." + CHAT_ID + " = act." + CHAT_ID;
-		else
-			SELECT_CHATS_QUERY = "SELECT * FROM " + CHATS_TABLE_NAME; 
+		SELECT_CHATS_QUERY = "SELECT * FROM " + CHATS_TABLE_NAME + " WHERE " + FROM + " = '" + username + "'"; // "' ORDER BY " + WHEN + " DESC LIMIT 10" ; 
 		Cursor cursor = db.rawQuery(SELECT_CHATS_QUERY, null);
-		ArrayList<Chat> result = new ArrayList<Chat>();
+		ArrayList<Message> result = new ArrayList<Message>();
 		if (cursor.moveToFirst()) {
 			do {
-				Chat chat = new Chat();
-				chat.setChatID(Integer.parseInt(cursor.getString(0)));
-				chat.setChatName(cursor.getString(1));
+				Message chat = new Message();
+				chat.setId(Integer.parseInt(cursor.getString(0)));
+				chat.setText(cursor.getString(1));
+				chat.setDir(cursor.getString(4));
 				result.add(chat);
 			} while (cursor.moveToNext());
 		}
-		return result;
+		
+		Message[] mymes = new Message[result.size()];
+		for(int k = 0; k < result.size(); k++){
+			mymes[k] = result.get(k);
+		}
+		return mymes;
 	}	
 	
 	public int generateNextID(String tableName, String primaryKeyName) {

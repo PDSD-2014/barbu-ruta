@@ -75,7 +75,7 @@ public class ParseXMLFile {
 					String from = element.getElementsByTagName("from").item(0).getTextContent();
 					String text = element.getElementsByTagName("text").item(0).getTextContent();
 					String when = element.getElementsByTagName("when").item(0).getTextContent();
-					messageList.add(new Message(from, text, when,Integer.parseInt(id)));
+					messageList.add(new Message(from, text, when,Integer.parseInt(id), "venit"));
 				}
 			}
 		} catch (Exception e) {
