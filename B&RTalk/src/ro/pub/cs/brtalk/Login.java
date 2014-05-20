@@ -109,7 +109,10 @@ public class Login extends Activity {
 								@Override
 								public void run() {
 									// TODO Auto-generated method stub
-									if (result.equals("1")){
+									if (result.equals("NOT REACHED")){
+										Toast.makeText(Login.this, R.string.not_reached, Toast.LENGTH_LONG).show();
+										
+									}else if (result.equals("1")){
 										Toast.makeText(Login.this,R.string.signin_error, Toast.LENGTH_LONG).show();
 									}else if(result.equalsIgnoreCase("INCORECT DATA")){
 										Toast.makeText(Login.this, R.string.incorect_user_pass, Toast.LENGTH_LONG).show();

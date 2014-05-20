@@ -37,5 +37,6 @@
     <string name="title_activity_add_friend">AddFriend</string>
     <string name="title_activity_communicating">Communicating</string>
     <string name="send">Send</string>
+    <string name="not_reached">Server is down. Try again!</string> 
 
 </resources>

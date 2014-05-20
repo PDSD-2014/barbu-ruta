@@ -1,7 +1,9 @@
 package ro.pub.cs.brtalk.communication;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.UnknownHostException;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -26,6 +28,22 @@ public class Socket implements ISocket {
 	@Override
 	public String sendHttpRequest(String params) {
 		// TODO Auto-generated method stub
+		Boolean notReached = false;
+		
+		try {
+			notReached = InetAddress.getByName("192.168.0.106").isReachable(5000);
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		if (notReached == false){
+			return "NOT REACHED";
+		}
+		
 		HttpClient client = new DefaultHttpClient();  
 		HttpGet get = new HttpGet("http://192.168.0.106/pdsd/index.php?" + params);
 		 
@@ -34,6 +52,7 @@ public class Socket implements ISocket {
 		 
 		try {  
 		        response = client.execute(get,handler);
+		        
 		} catch (ClientProtocolException e) {
 		        e.printStackTrace();
 		} catch (IOException e){

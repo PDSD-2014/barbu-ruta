@@ -103,6 +103,9 @@ public class IMService extends Service implements IManagerApp {
 		this.authenticatedUser = false;
 		String params = "type=signin&username=" + username + "&password=" + password;
 		String result = socket.sendHttpRequest(params);
+		if (result.equals("NOT REACHED")){
+			return result;
+		}
 		if (!result.equals("1") && !(result.equals("INCORECT DATA"))){
 			authenticatedUser = true;
 			this.username = username;
